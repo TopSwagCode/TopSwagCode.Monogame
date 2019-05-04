@@ -140,12 +140,6 @@
 /processorParam:TextureFormat=Color
 /build:Background/StarsSmall1.png
 
-#begin InfectedMushroomGuitarmass.mp3
-/importer:Mp3Importer
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:InfectedMushroomGuitarmass.mp3
-
 #begin To_the_Next_Destination.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor

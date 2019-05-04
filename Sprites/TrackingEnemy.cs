@@ -49,68 +49,26 @@ namespace Uranus.Sprites
                 }
             }
 
-
-
-            float yMaxSpeed = 1f;
+            float yMaxSpeed = 0.35f*Speed;
 
             if (nearestPlayer == new Vector2())
             {
                 yMaxSpeed = 0f;
             }
-            else if (nearestPlayer.Y - Position.Y > yMaxSpeed)
+            else if ((nearestPlayer.Y - Position.Y) > (yMaxSpeed))
             {
-                yMaxSpeed = Speed;
+                yMaxSpeed = yMaxSpeed;
             }
             else if (nearestPlayer.Y - Position.Y < -yMaxSpeed)
             {
-                yMaxSpeed = -Speed;
-            }
-            else if (nearestPlayer.Y < Position.Y)
-            {
-                yMaxSpeed = nearestPlayer.Y - Position.Y;
-            }
-            else if (nearestPlayer.Y > Position.Y)
-            {
-                yMaxSpeed = nearestPlayer.Y - Position.Y;
+                yMaxSpeed = yMaxSpeed * -1;
             }
 
             Position += new Vector2(-Speed, yMaxSpeed);
-
-            if (yMaxSpeed > 2)
-                _texture = _left;
-            else if (yMaxSpeed < -2)
-                _texture = _right;
-            else
-                _texture = _center;
 
             // if the enemy is off the left side of the screen
             if (Position.X < -_texture.Width)
                 IsRemoved = true;
         }
-
-        /*
-        public override void OnCollide(Sprite sprite, GameTime gameTime)
-        {
-            // If we crash into a player that is still alive
-            if (sprite is Player && !((Player)sprite).IsDead)
-            {
-                ((Player)sprite).Score.Value++;
-
-                // We want to remove the ship completely
-                IsRemoved = true;
-            }
-
-            // If we hit a bullet that belongs to a player      
-            if (sprite is Bullet && ((Bullet)sprite).Parent is Player)
-            {
-                Health--;
-
-                if (Health <= 0)
-                {
-                    IsRemoved = true;
-                    ((Player)sprite.Parent).Score.Value++;
-                }
-            }
-        }*/
     }
 }

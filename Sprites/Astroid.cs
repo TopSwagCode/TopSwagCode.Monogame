@@ -36,14 +36,12 @@ namespace Uranus.Sprites
             {
                 Rotation+=0.25f;
                 _timeToRotate = gameTime.TotalGameTime.TotalMilliseconds + 45;
-                // Add random rotation direction and random speed.
             }
 
         }
 
         public void OnCollide(Sprite sprite, GameTime gameTime)
         {
-            // Can't hit a player if they're dead
             if (sprite is Player && ((Player)sprite).IsDead)
                 return;
 

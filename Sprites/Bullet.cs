@@ -34,37 +34,15 @@ namespace Uranus.Sprites
 
         public void OnCollide(Sprite sprite, GameTime gameTime)
         {
-            //switch (sprite)
-            //{
-            //  case Bullet b:
-            //    return;
-            //  case Enemy e1 when e1.Parent is Enemy:
-
-            //    if (e1.Parent is Enemy)
-            //      return;
-
-            //    if()
-
-            //    return;
-            //  case Enemy e2 when 
-
-            //  case Player p when (p.IsDead || p.Parent is Player):
-            //    return;
-            //}
-
-            // Bullets don't collide with eachother
             if (sprite is Bullet)
                 return;
 
-            // Enemies can't shoot eachother
             if (sprite is Enemy && this.Parent is Enemy)
                 return;
 
-            // Players can't shoot eachother
             if (sprite is Player && this.Parent is Player)
                 return;
 
-            // Can't hit a player if they're dead
             if (sprite is Player && ((Player)sprite).IsDead)
                 return;
 

@@ -14,28 +14,28 @@ namespace Uranus.States
     {
         private EnemyManager _enemyManager;
         private PlayerManger _playerManger;
-
         private SpriteFont _font;
-
         private List<Player> _players;
-
         private ScoreManager _scoreManager;
-
         private List<Sprite> _sprites;
-
         public int PlayerCount;
         private BackgroundManager _backgroundManager;
         private MusicManager _musicManager;
         private BulletManager _bulletManager;
+        static float shakeRadius = 10f;
+        static bool shakeScreen = false;
+        static Vector2 shakeOffset = new Vector2(15, 15);
+        static int shakeCount = 0;
+        static int maxShakes = 20;
+        static int shakeStartAngle = 15;
+        private AstroidManager _astroidManager;
 
-        public GameState(Game1 game, ContentManager content)
-        : base(game, content)
+        public GameState(Game1 game, ContentManager content) : base(game, content)
         {
         }
 
         public override void LoadContent()
         {
-
             var bulletTexture = _content.Load<Texture2D>("Bullet");
 
             _font = _content.Load<SpriteFont>("Font");
@@ -59,12 +59,9 @@ namespace Uranus.States
                 _sprites.Add(_playerManger.GetPlayer(PlayerColour.Green, PlayerControls.Arrow, "Player 2"));
             }
 
-            _players = _sprites.Where(c => c is Player).Select(c => (Player)c).ToList();
+            _players = _sprites.Where(c => c is Player).Select(c => (Player) c).ToList();
 
-            _enemyManager = new EnemyManager(_content)
-            {
-                Bullet = _bulletManager.GetBullet(BulletType.Proton),
-            };
+            _enemyManager = new EnemyManager(_content) {Bullet = _bulletManager.GetBullet(BulletType.Proton),};
 
             _backgroundManager = new BackgroundManager(_content);
             _musicManager = new MusicManager(_content);
@@ -81,11 +78,9 @@ namespace Uranus.States
             {
                 _musicManager.Stop();
                 _game.ChangeState(new MenuState(_game, _content));
-
             }
 
-            foreach (var sprite in _sprites)
-                sprite.Update(gameTime);
+            foreach (var sprite in _sprites) sprite.Update(gameTime);
 
             _enemyManager.Update(gameTime);
             if (_enemyManager.CanAdd && _sprites.Where(c => c is Enemy).Count() < _enemyManager.MaxEnemies)
@@ -93,14 +88,11 @@ namespace Uranus.States
                 _sprites.Add(_enemyManager.GetEnemy());
             }
 
-
             _astroidManager.Update(gameTime);
             if (_astroidManager.CanAdd && _sprites.Where(c => c is Astroid).Count() < _astroidManager.MaxAstroids)
             {
                 _sprites.Add(_astroidManager.GetAstroid());
             }
-
-
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -112,29 +104,21 @@ namespace Uranus.States
                 foreach (var spriteB in collidableSprites)
                 {
                     // Don't do anything if they're the same sprite!
-                    if (spriteA == spriteB)
-                        continue;
+                    if (spriteA == spriteB) continue;
 
-                    if (spriteA is Bullet && spriteB is Bullet)
-                        continue;
+                    if (spriteA is Bullet && spriteB is Bullet) continue;
 
-                    if (spriteA is Bullet && spriteB is Player && ((Bullet)spriteA).Parent is Player)
-                        continue;
+                    if (spriteA is Bullet && spriteB is Player && ((Bullet) spriteA).Parent is Player) continue;
 
-                    if (spriteB is Bullet && spriteA is Player && ((Bullet)spriteB).Parent is Player)
-                        continue;
+                    if (spriteB is Bullet && spriteA is Player && ((Bullet) spriteB).Parent is Player) continue;
 
-                    if (spriteA is Bullet && spriteB is Enemy && ((Bullet)spriteA).Parent is Enemy)
-                        continue;
+                    if (spriteA is Bullet && spriteB is Enemy && ((Bullet) spriteA).Parent is Enemy) continue;
 
-                    if (spriteB is Bullet && spriteA is Enemy && ((Bullet)spriteB).Parent is Enemy)
-                        continue;
+                    if (spriteB is Bullet && spriteA is Enemy && ((Bullet) spriteB).Parent is Enemy) continue;
 
-                    if (!spriteA.CollisionArea.Intersects(spriteB.CollisionArea))
-                        continue;
+                    if (!spriteA.CollisionArea.Intersects(spriteB.CollisionArea)) continue;
 
-                    if (spriteA.Intersects(spriteB))
-                        ((ICollidable)spriteA).OnCollide(spriteB, gameTime);
+                    if (spriteA.Intersects(spriteB)) ((ICollidable) spriteA).OnCollide(spriteB, gameTime);
                 }
             }
 
@@ -143,8 +127,7 @@ namespace Uranus.States
             for (int i = 0; i < spriteCount; i++)
             {
                 var sprite = _sprites[i];
-                foreach (var child in sprite.Children)
-                    _sprites.Add(child);
+                foreach (var child in sprite.Children) _sprites.Add(child);
 
                 sprite.Children = new List<Sprite>();
             }
@@ -170,7 +153,9 @@ namespace Uranus.States
                 //shakeOffset *= -1;
                 //float shakeRadius = 10f;
 
-                shakeOffset = new Vector2((float)(Math.Sin(shakeStartAngle) * shakeRadius), (float)(Math.Cos(shakeStartAngle) * shakeRadius)); ;
+                shakeOffset = new Vector2((float) (Math.Sin(shakeStartAngle) * shakeRadius),
+                    (float) (Math.Cos(shakeStartAngle) * shakeRadius));
+                ;
                 shakeRadius -= 0.25f;
                 shakeStartAngle += (150 + Game1.Random.Next(60));
                 shakeCount++;
@@ -184,8 +169,7 @@ namespace Uranus.States
             // If all the players are dead, we save the scores, and return to the highscore state
             if (_players.All(c => c.IsDead))
             {
-                foreach (var player in _players)
-                    _scoreManager.Add(player.Score);
+                foreach (var player in _players) _scoreManager.Add(player.Score);
 
                 ScoreManager.Save(_scoreManager);
                 _musicManager.Stop();
@@ -201,25 +185,16 @@ namespace Uranus.States
             shakeCount = 0;
         }
 
-        //
-        static float shakeRadius = 10f;
-        static bool shakeScreen = false;
-        static Vector2 shakeOffset = new Vector2(15, 15);
-        static int shakeCount = 0;
-        static int maxShakes = 20;
-        static int shakeStartAngle = 15;
-        private AstroidManager _astroidManager;
-
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (shakeScreen)
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, Matrix.CreateTranslation(shakeOffset.X, shakeOffset.Y, 0));
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null,
+                    Matrix.CreateTranslation(shakeOffset.X, shakeOffset.Y, 0));
             else
                 spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
             _backgroundManager.Draw(spriteBatch);
-            foreach (var sprite in _sprites)
-                sprite.Draw(gameTime, spriteBatch);
+            foreach (var sprite in _sprites) sprite.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
 
@@ -234,6 +209,7 @@ namespace Uranus.States
 
                 x += 150;
             }
+
             spriteBatch.End();
         }
     }

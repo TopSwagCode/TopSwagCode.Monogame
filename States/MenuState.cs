@@ -95,6 +95,7 @@ namespace Uranus.States
 
         public override void Update(GameTime gameTime)
         {
+            _musicManager.UpdateGame(gameTime);
             foreach (var component in _components)
                 component.Update(gameTime);
         }

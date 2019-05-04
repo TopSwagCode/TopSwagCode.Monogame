@@ -18,8 +18,7 @@ namespace Uranus.States
 
         private ScoreManager _scoreManager;
 
-        public HighscoresState(Game1 game, ContentManager content)
-          : base(game, content)
+        public HighscoresState(Game1 game, ContentManager content) : base(game, content)
         {
         }
 
@@ -33,15 +32,15 @@ namespace Uranus.States
             var buttonFont = _content.Load<SpriteFont>("Font");
 
             _components = new List<Component>()
-      {
-        new Button(buttonTexture, buttonFont)
-        {
-          Text = "Main Menu",
-          Position = new Vector2(Game1.ScreenWidth / 2, 560),
-          Click = new EventHandler(Button_MainMenu_Clicked),
-          Layer = 0.1f
-        },
-      };
+            {
+                new Button(buttonTexture, buttonFont)
+                {
+                    Text = "Main Menu",
+                    Position = new Vector2(Game1.ScreenWidth / 2, 560),
+                    Click = new EventHandler(Button_MainMenu_Clicked),
+                    Layer = 0.1f
+                }
+            };
         }
 
         private void Button_MainMenu_Clicked(object sender, EventArgs args)
@@ -51,30 +50,29 @@ namespace Uranus.States
 
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Button_MainMenu_Clicked(this, new EventArgs());
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Button_MainMenu_Clicked(this, new EventArgs());
 
-            foreach (var component in _components)
-                component.Update(gameTime);
+            foreach (var component in _components) component.Update(gameTime);
         }
 
         public override void PostUpdate(GameTime gameTime)
         {
-
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            foreach (var component in _components)
-                component.Draw(gameTime, spriteBatch);
+            foreach (var component in _components) component.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            spriteBatch.DrawString(_font, "Highscores:\n" + string.Join("\n", _scoreManager.HighScores.Select(c => c.PlayerName + ": " + c.Value)), new Vector2(400, 100), Color.Red);
+            spriteBatch.DrawString(_font,
+                "Highscores:\n" +
+                string.Join("\n", _scoreManager.HighScores.Select(c => c.PlayerName + ": " + c.Value)),
+                new Vector2(400, 100), Color.Red);
 
             spriteBatch.End();
         }

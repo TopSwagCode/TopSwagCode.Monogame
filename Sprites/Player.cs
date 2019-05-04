@@ -75,17 +75,11 @@ namespace Uranus.Sprites
 
             if (_currentKey.IsKeyDown(Input.Shoot) && _shootTimer > 0.25f)
             {
-                //Shoot(10f, -6f);
 
-                //   Shoot(10f, -4f);
-
-                //       Shoot(10f, -2f);
+                //Shoot(10f, -2f); Shoot left
                 Shoot(10f);
-                //     Shoot(10f, 2f);
+                //Shoot(10f, 2f); shoot right
 
-                //           Shoot(10f, 4f);
-
-                //   Shoot(10f, 6f);
                 _shootTimer = 0f;
             }
 

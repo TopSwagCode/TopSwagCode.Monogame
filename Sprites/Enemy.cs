@@ -17,11 +17,9 @@ namespace Uranus.Sprites
         {
             Speed = 2f;
         }
-
+        
         public override void Update(GameTime gameTime)
         {
-
-
             if (gameTime.TotalGameTime.TotalMilliseconds >= ShootingTimer)
             {
                 Shoot(-10f);
