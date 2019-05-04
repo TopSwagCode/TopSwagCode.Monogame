@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Uranus.Controls;
 using Uranus.Managers;
+using Uranus.Sprites;
 
 namespace Uranus.States
 {
@@ -33,6 +34,10 @@ namespace Uranus.States
 
             _components = new List<Component>()
             {
+                new Sprite(_content.Load<Texture2D>("Background/MainMenu"))
+                {
+                    Layer = 0f, Position = new Vector2(Game1.ScreenWidth / 2, Game1.ScreenHeight / 2),
+                },
                 new Button(buttonTexture, buttonFont)
                 {
                     Text = "Main Menu",
